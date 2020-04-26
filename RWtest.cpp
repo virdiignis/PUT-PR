@@ -65,7 +65,7 @@ std::set<int> second_sequential(int min, int max) {
 
 
 int main() {
-    std::set<int> result = second_sequential(2, 49);
+    std::set<int> result = second_sequential(2, 1000);
     //print_out_set(result);
 //
 //	int maxThreadsCount = omp_get_max_threads();
