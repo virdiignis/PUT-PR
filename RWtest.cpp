@@ -8,7 +8,7 @@
 #include <set>
 #include "Time.h"
 
-#define MAX 10000000
+#define MAX 500000000
 #define THREADS_NUM 12
 
 template<typename T>
@@ -61,8 +61,8 @@ std::vector<int> first_sequential_v(int min, int max) {
 std::set<int> sequential(int min, int max) {
     std::set<int> primary_numbers = first_sequential(3, ceil(sqrt(max)));
     std::set<int> initial;
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
     for (int x: primary_numbers)
         for (int y = x; x * y < max; y += 2)
@@ -75,8 +75,8 @@ std::set<int> parallel_1(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
     std::set<int> to_erase[THREADS_NUM];
 
@@ -96,8 +96,8 @@ std::set<int> parallel_2(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial)
     for (int x: primary_numbers) {
@@ -115,8 +115,8 @@ std::set<int> parallel_3(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
     std::set<int> to_erase;
 
@@ -135,8 +135,8 @@ std::set<int> parallel_4(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial)
@@ -152,8 +152,8 @@ std::set<int> parallel_5(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) collapse(2)
@@ -164,7 +164,7 @@ std::set<int> parallel_5(int min, int max) {
 
     return initial;
 }
-// Ponieważ wyniki wstępnej analizy do 10M na 12 wątkach są bardzo zbliożone, do dalszej analizy za podstawę wezmę p4.
+// Ponieważ wyniki wstępnej analizy do 10M na 12 wątkach są bardzo zbliożone, do dalszej analizy za podstawę wezmę p3 i p4.
 //parallel_1 : 47.6234
 //parallel_2 : 48.2929
 //parallel_3 : 46.1292
@@ -175,8 +175,8 @@ std::set<int> parallel_6(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) schedule(static)
@@ -192,8 +192,8 @@ std::set<int> parallel_7(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) schedule(static, 100)
@@ -210,8 +210,8 @@ std::set<int> parallel_8(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) schedule(dynamic) //==dynamic, 1
@@ -219,7 +219,6 @@ std::set<int> parallel_8(int min, int max) {
         for (int y = x; y * x < max; y += 2)
             initial.erase(x * y);
     }
-
     return initial;
 }
 
@@ -227,8 +226,8 @@ std::set<int> parallel_9(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) schedule(dynamic, 100)
@@ -244,8 +243,8 @@ std::set<int> parallel_10(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) schedule(guided)
@@ -261,8 +260,8 @@ std::set<int> parallel_11(int min, int max) {
     std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
     std::set<int> initial;
 
-    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
-    if (min == 2) initial.insert(2);
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
 
 
 #pragma omp parallel for default(none) private(primary_numbers, max) shared(initial) schedule(guided, 10)
@@ -274,17 +273,135 @@ std::set<int> parallel_11(int min, int max) {
     return initial;
 }
 
+std::set<int> parallel_12(int min, int max) {
+    std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
+    std::set<int> initial;
+
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
+
+    std::set<int> to_erase;
+
+#pragma omp parallel for default(none) private(primary_numbers, max, to_erase) shared(initial) schedule(static)
+    for (int x: primary_numbers) {
+        for (int y = x; y * x < max; y += 2)
+            to_erase.insert(x * y);
+#pragma omp critical
+        for (int e: to_erase) initial.erase(e);
+    }
+
+    return initial;
+}
+
+std::set<int> parallel_13(int min, int max) {
+    std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
+    std::set<int> initial;
+
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
+
+    std::set<int> to_erase;
+
+#pragma omp parallel for default(none) private(primary_numbers, max, to_erase) shared(initial) schedule(static, 100)
+    for (int x: primary_numbers) {
+        for (int y = x; y * x < max; y += 2)
+            to_erase.insert(x * y);
+#pragma omp critical
+        for (int e: to_erase) initial.erase(e);
+    }
+
+    return initial;
+}
+
+std::set<int> parallel_14(int min, int max) {
+    std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
+    std::set<int> initial;
+
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
+
+    std::set<int> to_erase;
+
+#pragma omp parallel for default(none) private(primary_numbers, max, to_erase) shared(initial) schedule(dynamic)
+    for (int x: primary_numbers) {
+        for (int y = x; y * x < max; y += 2)
+            to_erase.insert(x * y);
+#pragma omp critical
+        for (int e: to_erase) initial.erase(e);
+    }
+
+    return initial;
+}
+
+std::set<int> parallel_15(int min, int max) {
+    std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
+    std::set<int> initial;
+
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
+
+    std::set<int> to_erase;
+
+#pragma omp parallel for default(none) private(primary_numbers, max, to_erase) shared(initial) schedule(dynamic, 100)
+    for (int x: primary_numbers) {
+        for (int y = x; y * x < max; y += 2)
+            to_erase.insert(x * y);
+#pragma omp critical
+        for (int e: to_erase) initial.erase(e);
+    }
+
+    return initial;
+}
+
+std::set<int> parallel_16(int min, int max) {
+    std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
+    std::set<int> initial;
+
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
+
+    std::set<int> to_erase;
+
+#pragma omp parallel for default(none) private(primary_numbers, max, to_erase) shared(initial) schedule(guided)
+    for (int x: primary_numbers) {
+        for (int y = x; y * x < max; y += 2)
+            to_erase.insert(x * y);
+#pragma omp critical
+        for (int e: to_erase) initial.erase(e);
+    }
+
+    return initial;
+}
+
+std::set<int> parallel_17(int min, int max) {
+    std::vector<int> primary_numbers = first_sequential_v(3, ceil(sqrt(max)));
+    std::set<int> initial;
+
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(initial.end(), i);
+    if (min == 2) initial.insert(initial.end(), 2);
+
+    std::set<int> to_erase;
+
+#pragma omp parallel for default(none) private(primary_numbers, max, to_erase) shared(initial) schedule(guided, 10)
+    for (int x: primary_numbers) {
+        for (int y = x; y * x < max; y += 2)
+            to_erase.insert(x * y);
+#pragma omp critical
+        for (int e: to_erase) initial.erase(e);
+    }
+
+    return initial;
+}
+
 void tests() {
     FILE *f = fopen("results.csv", "w");
     std::set<int> result;
     Time t = Time();
 
-    t.start();
     result = sequential(2, MAX);
     t.stop();
     fprintf(f, "'sequential', 1, %f\n", t.get());
     printf("'sequential', 1, %f\n", t.get());
-
 
     omp_set_num_threads(1);
     t.start();
@@ -636,6 +753,199 @@ void tests() {
     t.stop();
     fprintf(f, "'parallel_11', 12, %f\n", t.get());
     printf("'parallel_11', 12, %f\n", t.get());
+
+
+    omp_set_num_threads(1);
+    t.start();
+    result = parallel_12(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_12', 1, %f\n", t.get());
+    printf("'parallel_12', 1, %f\n", t.get());
+
+
+    omp_set_num_threads(3);
+    t.start();
+    result = parallel_12(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_12', 3, %f\n", t.get());
+    printf("'parallel_12', 3, %f\n", t.get());
+
+
+    omp_set_num_threads(6);
+    t.start();
+    result = parallel_12(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_12', 6, %f\n", t.get());
+    printf("'parallel_12', 6, %f\n", t.get());
+
+
+    omp_set_num_threads(12);
+    t.start();
+    result = parallel_12(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_12', 12, %f\n", t.get());
+    printf("'parallel_12', 12, %f\n", t.get());
+
+
+    omp_set_num_threads(1);
+    t.start();
+    result = parallel_13(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_13', 1, %f\n", t.get());
+    printf("'parallel_13', 1, %f\n", t.get());
+
+
+    omp_set_num_threads(3);
+    t.start();
+    result = parallel_13(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_13', 3, %f\n", t.get());
+    printf("'parallel_13', 3, %f\n", t.get());
+
+
+    omp_set_num_threads(6);
+    t.start();
+    result = parallel_13(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_13', 6, %f\n", t.get());
+    printf("'parallel_13', 6, %f\n", t.get());
+
+
+    omp_set_num_threads(12);
+    t.start();
+    result = parallel_13(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_13', 12, %f\n", t.get());
+    printf("'parallel_13', 12, %f\n", t.get());
+
+
+    omp_set_num_threads(1);
+    t.start();
+    result = parallel_14(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_14', 1, %f\n", t.get());
+    printf("'parallel_14', 1, %f\n", t.get());
+
+
+    omp_set_num_threads(3);
+    t.start();
+    result = parallel_14(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_14', 3, %f\n", t.get());
+    printf("'parallel_14', 3, %f\n", t.get());
+
+
+    omp_set_num_threads(6);
+    t.start();
+    result = parallel_14(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_14', 6, %f\n", t.get());
+    printf("'parallel_14', 6, %f\n", t.get());
+
+
+    omp_set_num_threads(12);
+    t.start();
+    result = parallel_14(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_14', 12, %f\n", t.get());
+    printf("'parallel_14', 12, %f\n", t.get());
+
+
+    omp_set_num_threads(1);
+    t.start();
+    result = parallel_15(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_15', 1, %f\n", t.get());
+    printf("'parallel_15', 1, %f\n", t.get());
+
+
+    omp_set_num_threads(3);
+    t.start();
+    result = parallel_15(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_15', 3, %f\n", t.get());
+    printf("'parallel_15', 3, %f\n", t.get());
+
+
+    omp_set_num_threads(6);
+    t.start();
+    result = parallel_15(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_15', 6, %f\n", t.get());
+    printf("'parallel_15', 6, %f\n", t.get());
+
+
+    omp_set_num_threads(12);
+    t.start();
+    result = parallel_15(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_15', 12, %f\n", t.get());
+    printf("'parallel_15', 12, %f\n", t.get());
+
+
+    omp_set_num_threads(1);
+    t.start();
+    result = parallel_16(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_16', 1, %f\n", t.get());
+    printf("'parallel_16', 1, %f\n", t.get());
+
+
+    omp_set_num_threads(3);
+    t.start();
+    result = parallel_16(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_16', 3, %f\n", t.get());
+    printf("'parallel_16', 3, %f\n", t.get());
+
+
+    omp_set_num_threads(6);
+    t.start();
+    result = parallel_16(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_16', 6, %f\n", t.get());
+    printf("'parallel_16', 6, %f\n", t.get());
+
+
+    omp_set_num_threads(12);
+    t.start();
+    result = parallel_16(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_16', 12, %f\n", t.get());
+    printf("'parallel_16', 12, %f\n", t.get());
+
+
+    omp_set_num_threads(1);
+    t.start();
+    result = parallel_17(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_17', 1, %f\n", t.get());
+    printf("'parallel_17', 1, %f\n", t.get());
+
+
+    omp_set_num_threads(3);
+    t.start();
+    result = parallel_17(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_17', 3, %f\n", t.get());
+    printf("'parallel_17', 3, %f\n", t.get());
+
+
+    omp_set_num_threads(6);
+    t.start();
+    result = parallel_17(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_17', 6, %f\n", t.get());
+    printf("'parallel_17', 6, %f\n", t.get());
+
+
+    omp_set_num_threads(12);
+    t.start();
+    result = parallel_17(2, MAX);
+    t.stop();
+    fprintf(f, "'parallel_17', 12, %f\n", t.get());
+    printf("'parallel_17', 12, %f\n", t.get());
+
 }
 
 int main() {
