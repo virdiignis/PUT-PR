@@ -8,6 +8,8 @@
 #include <set>
 #include "Time.h"
 
+#define MAX 10000000
+
 template<typename T>
 void print_out_set(const T &set) {
     for (int i : set)
@@ -19,15 +21,15 @@ void print_out_set(const T &set) {
 std::set<int> first_sequential(int min, int max) {
     std::set<int> result;
 
-    if (min == 2) {
+    if (min == 2)
         result.insert(2);
-    }
 
     for (int i = min; i <= max; i++) {
-        for (int j = 2; j <= ceil(sqrt(i)); j++) {
+        if (i % 2 == 0) continue;
+        for (int j = 3; j <= ceil(sqrt(i)); j += 2) {
             if (i % j == 0) {
                 break;
-            } else if (j == ceil(sqrt(i))) {
+            } else if (ceil(sqrt(i)) - j < 2) {
                 result.insert(i);
             }
         }
@@ -38,35 +40,27 @@ std::set<int> first_sequential(int min, int max) {
 
 
 std::set<int> second_sequential(int min, int max) {
+    std::set<int> primary_numbers = first_sequential(3, ceil(sqrt(max)));
     std::set<int> initial;
-    for (int i = min; i < max; i++) initial.insert(i);
-    std::set<int> primary_numbers = first_sequential(2, ceil(sqrt(max)));
-    std::set<int> numbers_to_erase;
+    for (int i = min % 2 ? min : min + 1; i < max; i += 2) initial.insert(i);
+    if (min == 2) initial.insert(2);
 
-    print_out_set<std::set<int>>(primary_numbers);
+    for (int x: primary_numbers)
+        for (int y = x; x * y < max; y += 2)
+            initial.erase(x * y);
 
-    for (int i : initial) {
-        for (int primary_number : primary_numbers) {
-            if (i % primary_number == 0) {
-                numbers_to_erase.insert(i);
-                break;
-            }
-        }
-    }
-
-    std::set<int> result;
-
-    std::set_difference(initial.begin(), initial.end(), numbers_to_erase.begin(), numbers_to_erase.end(),
-                        inserter(result, result.end()));
-    print_out_set<std::set<int>>(result);
-
-    return result;
+    return initial;
 }
 
 
 int main() {
-    std::set<int> result = second_sequential(2, 1000);
-    //print_out_set(result);
+    Time t = Time();
+    std::set<int> result = second_sequential(2, MAX);
+    t.stop();
+    std::cout << t.get() << std::endl;
+
+
+//    print_out_set<std::set<int>>(result);
 //
 //	int maxThreadsCount = omp_get_max_threads();
 //	int threadsCount = omp_get_num_threads();

@@ -2,14 +2,17 @@
 
 #include <omp.h>
 
-class Time
-{
+class Time {
 public:
-	Time() {
+    Time() {
         this->O1 = omp_get_wtime();
     }
 
     ~Time();
+
+    void start() {
+        this->O1 = omp_get_wtime();
+    }
 
     void stop() {
         this->O2 = omp_get_wtime();
