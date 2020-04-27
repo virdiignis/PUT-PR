@@ -3,6 +3,7 @@ project(PUT_PR)
 
 set(CMAKE_CXX_STANDARD 14)
 
+
 find_package(OpenMP)
 
 

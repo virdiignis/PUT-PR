@@ -394,7 +394,7 @@ std::set<int> parallel_17(int min, int max) {
 }
 
 void tests() {
-    FILE *f = fopen("results.csv", "w");
+    FILE *f = fopen("../results.csv", "w");
     std::set<int> result;
     Time t = Time();
 
