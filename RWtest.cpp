@@ -24,12 +24,11 @@ std::set<int> first_sequential(int min, int max) {
     if (min == 2)
         result.insert(2);
 
-    for (int i = min; i <= max; i++) {
-        if (i % 2 == 0) continue;
-        for (int j = 3; j <= ceil(sqrt(i)); j += 2) {
+    for (int i = min % 2 ? min : min + 1; i <= max; i += 2) {
+        for (int j = 2; j <= ceil(sqrt(i)); j++) {
             if (i % j == 0) {
                 break;
-            } else if (ceil(sqrt(i)) - j < 2) {
+            } else if (j == ceil(sqrt(i))) {
                 result.insert(i);
             }
         }
@@ -55,12 +54,12 @@ std::set<int> second_sequential(int min, int max) {
 
 int main() {
     Time t = Time();
-    std::set<int> result = second_sequential(2, MAX);
+    std::set<int> result = second_sequential(10, 50);
     t.stop();
     std::cout << t.get() << std::endl;
 
 
-//    print_out_set<std::set<int>>(result);
+    print_out_set<std::set<int>>(result);
 //
 //	int maxThreadsCount = omp_get_max_threads();
 //	int threadsCount = omp_get_num_threads();
